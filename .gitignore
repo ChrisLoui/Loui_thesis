@@ -24,7 +24,7 @@ eggs/
 .eggs/
 lib/
 lib64/
-parts/
+parts/re
 sdist/
 var/
 wheels/
