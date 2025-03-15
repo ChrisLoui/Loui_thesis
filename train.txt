@@ -12,7 +12,6 @@ you understand? => do you understand me?
 i not understand => i don’t understand
 clear? => is that clear?
 hello => hello
-hi => hi
 good morning => good morning
 good afternoon => good afternoon
 good evening => good evening
