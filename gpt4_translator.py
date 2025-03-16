@@ -20,10 +20,14 @@ def generate_sentence_from_words_gpt4(detected_words, openai_api_key):
     prompt = (
         "You are an expert translator specializing in translating English grammar into "
         "Filipino Sign Language (FSL) gloss notation. Given an English sentence, provide "
-        "exactly one accurate Filipino Sign Language gloss translation, structured according "
-        "to the grammatical rules of FSL. Return only a sequence of English words separated "
-        "by a single space, with no additional punctuation or symbols. "
+        "exactly one accurate Filipino Sign Language gloss translation. Follow these rules:\n\n"
         f"English Input:\n{gloss}\n\n"
+        "1. Omit articles, prepositions, and auxiliary verbs (e.g., a, an, the, is, are, do, etc.).\n"
+        "2. Place time or location at the beginning if applicable.\n"
+        "3. Use indexing pronouns (ME, YOU, HE, SHE, THEY).\n"
+        "4. Mark past or future tense with PAST or WILL.\n"
+        "5. For questions, place question words at the end (or beginning) without \"do\"/\"does\".\n"
+        "6. Return only ALL-CAPS words separated by single spaces, with no punctuation or symbols.\n\n"
         "Filipino Sign Language Gloss Translation:"
     )
 
@@ -50,7 +54,7 @@ if __name__ == "__main__":
     openai_api_key = os.getenv('OPENAI_API_KEY')
 
     # Example usage
-    detected_words = ["hello", "two"]
+    detected_words = ["what", "is", "your", "name"]
     translation = generate_sentence_from_words_gpt4(
         detected_words, openai_api_key)
     print(f"Detected words: {detected_words}")

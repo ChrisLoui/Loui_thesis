@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 YOU MEAN WHAT => what do you mean?
 YOU HAVE QUESTIONS => do you have any questions?
 WHY => why?
