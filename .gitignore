@@ -9,6 +9,7 @@ ENV/
 clips/
 my_data/
 model/
+trained_fsl_model/
 
 # Python
 __pycache__/
