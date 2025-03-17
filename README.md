@@ -1,4 +1,3 @@
-```markdown
 # Real-Time English to Filipino Sign Language (FSL) Translation System
 
 Welcome to the world of instant translation magic! Ever wished your spoken words could burst into dynamic Filipino Sign Language right before your eyes? Look no further—this machine learning marvel listens, translates, and even shows off its signing skills in real time. Get ready to experience communication like never before!
@@ -12,23 +11,6 @@ Welcome to the world of instant translation magic! Ever wished your spoken words
 - **FSL Grammar Savvy:** Adheres to FSL rules for that authentic feel.
 - **Extra Fun:** It’s like having your own personal sign language interpreter—minus the coffee breaks!
 
-## Project Structure
-
-```
-Loui_thesis/
-├── models/
-│   ├── t5-finetuned/   # Your finely-tuned T5 model (the translation wizard)
-│   └── vosk-model/     # The speech recognition engine that never sleeps
-├── data/
-│   ├── train.txt       # 384 FSL translation pairs—your secret sauce
-│   └── MY_DATA/        # A treasure trove of sign language video frames
-└── src/
-    ├── t5_translator.py        # Where the translation magic happens (training)
-    ├── t5_translator_runner.py # Time to show off your model (inference)
-    ├── frame_player.py         # The stage for your visual sign language performance
-    ├── live_translate.py       # The main event: live translation in action
-    └── gpt4_translator.py      # An alternative translator for when you feel fancy
-```
 
 ## Setup
 
