@@ -1,5 +1,3 @@
-Below is the complete, entertaining README.md file:
-
 ```markdown
 # Real-Time English to Filipino Sign Language (FSL) Translation System
 
