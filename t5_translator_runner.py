@@ -42,8 +42,7 @@ def translate_english_to_fsl(english_sentence, max_length=50):
 # Example usage
 if __name__ == "__main__":
     # Sample English sentence (use one of your training examples or new data)
-    english_sentence = "I am your doctor"
+    english_sentence = "did you eat?"
     translation = translate_english_to_fsl(english_sentence)
     print("English Input: ", english_sentence)
     print("FSL Translation: ", translation)
-

@@ -9,9 +9,9 @@ from vosk import Model, KaldiRecognizer
 # Load the Vosk Speech Recognition Model
 # ---------------------------
 # For Mac
-# vosk_model_path = "/Users/wincedelafuente/Desktop/Loui_thesis/model"
+vosk_model_path = "/Users/wincedelafuente/Desktop/Loui_thesis/model"
 # For WINDOWS
-vosk_model_path = "C:\\Users\\kcbar\\OneDrive\\Desktop\\LOUI_THESIS_REAL\\Loui_thesis\\model"
+# vosk_model_path = "C:\\Users\\kcbar\\OneDrive\\Desktop\\LOUI_THESIS_REAL\\Loui_thesis\\model"
 print(f"Loading Vosk model from: {vosk_model_path}")
 vosk_model = Model(vosk_model_path)
 rec = KaldiRecognizer(vosk_model, 16000)

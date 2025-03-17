@@ -1,7 +1,8 @@
-from Step_1.utils import *
+import os
+import cv2
 
 
-def play_collected_frames_for_action(action, DATA_PATH='MY_DATA', fps=10, sequence=None):
+def play_collected_frames_for_action(action, DATA_PATH='Step_2/MY_DATA', fps=10, sequence=None):
     action_folder = os.path.join(DATA_PATH, action)
     if not os.path.exists(action_folder):
         print(f"Action folder '{action_folder}' does not exist.")
@@ -28,7 +29,6 @@ def play_collected_frames_for_action(action, DATA_PATH='MY_DATA', fps=10, sequen
 
         cv2.destroyAllWindows()
 
-
 if __name__ == "__main__":
     # Example usage
-    play_collected_frames_for_action("HELLO", sequence=None)
+    play_collected_frames_for_action("doctor".upper(), fps=30, sequence=None)
