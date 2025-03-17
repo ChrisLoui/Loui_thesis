@@ -128,9 +128,6 @@ Feel like adding your own magic? Here’s how to join:
 4. Push to the branch.
 5. Open a Pull Request and let the fun begin!
 
-## License
-
-*(Insert license information here if applicable.)*
 
 ## Author
 
