@@ -9,8 +9,12 @@ model = T5ForConditionalGeneration.from_pretrained(model_path)
 
 
 def post_process_fsl(translation):
+    # Remove unwanted "FSL:" prefix if present.
     if translation.startswith("FSL:"):
         translation = translation.replace("FSL:", "", 1).strip()
+    # Replace "YOUR" with "YOU" if found.
+    if "YOUR" in translation:
+        translation = translation.replace("YOUR", "YOU")
     return translation
 
 def translate_english_to_fsl(english_sentence, max_length=50):
@@ -38,7 +42,8 @@ def translate_english_to_fsl(english_sentence, max_length=50):
 # Example usage
 if __name__ == "__main__":
     # Sample English sentence (use one of your training examples or new data)
-    english_sentence = "are you okay?"
+    english_sentence = "I am your doctor"
     translation = translate_english_to_fsl(english_sentence)
     print("English Input: ", english_sentence)
     print("FSL Translation: ", translation)
+
