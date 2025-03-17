@@ -1,0 +1,5 @@
+c80e3f10b691c3f39760fb7cfef6f2bacb7d97cd<|ENT|><|RY|>Merge branch 'main' of https://github.com/ChrisLoui/Loui_thesis<|COM|><|MIT|>
+e72048b3f843eb6dce3a3627429ae28834edcc27<|ENT|><|RY|>Update .gitignore to exclude 'trained_fsl_model/' directory and expand training phrases in 'train.txt' with additional entries for improved dialogue understanding.<|COM|><|MIT|>
+1ab3d51ee644d7a243cb04d9fcc4df9528e8a7f8<|ENT|><|RY|>Refactor Action Detection notebook to fix execution error, enhance gpt4_translator function with detailed translation rules, and update training data by removing redundant entry.<|COM|><|MIT|>
+b5fee8ea77318ba4602b3536d21e896a6de23e3c<|ENT|><|RY|>Update .gitignore to exclude 'parts/re' directory, modify Action Detection Refined notebook to reflect environment changes, and remove unused JSON files (checkpoint.json and words_list.json).<|COM|><|MIT|>
+fc3f38195eafad155b7b357954bdb84f53a7e781<|ENT|><|RY|>So far<|COM|><|MIT|>

@@ -7,6 +7,12 @@ model_path = "./t5-finetuned"
 tokenizer = T5Tokenizer.from_pretrained(model_path)
 model = T5ForConditionalGeneration.from_pretrained(model_path)
 
+
+def post_process_fsl(translation):
+    if translation.startswith("FSL:"):
+        translation = translation.replace("FSL:", "", 1).strip()
+    return translation
+
 def translate_english_to_fsl(english_sentence, max_length=50):
     """
     Translates a given English sentence into Filipino Sign Language (FSL) gloss using the fine-tuned model.
@@ -19,19 +25,20 @@ def translate_english_to_fsl(english_sentence, max_length=50):
         str: Translated FSL gloss.
     """
     # Use the prefix that was used during training for English-to-FSL translation.
-    input_text = "translate English to FSL: " + english_sentence
+    input_text = "translate english to fsl: " + english_sentence
     # Encode the input text
     input_ids = tokenizer.encode(input_text, return_tensors="pt", max_length=128, truncation=True)
     # Generate the translation
     output_ids = model.generate(input_ids, max_length=max_length, num_beams=5, early_stopping=True)
     # Decode the output tokens to a string
     translation = tokenizer.decode(output_ids[0], skip_special_tokens=True)
-    return translation
+    return post_process_fsl(translation)
+
 
 # Example usage
 if __name__ == "__main__":
     # Sample English sentence (use one of your training examples or new data)
-    english_sentence = "what"
+    english_sentence = "are you okay?"
     translation = translate_english_to_fsl(english_sentence)
     print("English Input: ", english_sentence)
     print("FSL Translation: ", translation)

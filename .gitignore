@@ -10,6 +10,7 @@ clips/
 my_data/
 model/
 trained_fsl_model/
+t5-finetuned/
 
 # Python
 __pycache__/
@@ -51,3 +52,7 @@ wheels/
 
 # Logs
 *.log
+test_gpu.py
+test_cuda.py
+requirements.txt
+test.py
