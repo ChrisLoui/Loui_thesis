@@ -1,145 +1,167 @@
+Below is the complete, entertaining README.md file:
+
+```markdown
 # Real-Time English to Filipino Sign Language (FSL) Translation System
 
-A machine learning system that translates spoken English to Filipino Sign Language (FSL) in real-time, using speech recognition, T5-based translation, and visual sign language display.
+Welcome to the world of instant translation magic! Ever wished your spoken words could burst into dynamic Filipino Sign Language right before your eyes? Look no further—this machine learning marvel listens, translates, and even shows off its signing skills in real time. Get ready to experience communication like never before!
 
 ## Features
 
-- Real-time speech recognition using Vosk
-- English to FSL gloss translation using fine-tuned T5 model
-- Visual display of sign language using pre-recorded frames
-- Support for continuous speech input and translation
-- Follows FSL grammar rules and conventions
-- Queued translation system for smooth playback
+- **Live-Action Speech Recognition:** Powered by Vosk, our system listens to your every word.
+- **T5-Powered Translation:** Our fine-tuned T5 model transforms your spoken English into crisp, clear FSL gloss.
+- **Visual Sign Language Display:** Watch pre-recorded sign frames light up as your message is translated.
+- **Continuous Input & Smooth Playback:** Chat away—our queued translation system keeps up with your pace.
+- **FSL Grammar Savvy:** Adheres to FSL rules for that authentic feel.
+- **Extra Fun:** It’s like having your own personal sign language interpreter—minus the coffee breaks!
 
 ## Project Structure
 
-
-bash
+```
 Loui_thesis/
 ├── models/
-│ ├── t5-finetuned/ # Trained T5 model
-│ └── vosk-model/ # Speech recognition model
+│   ├── t5-finetuned/   # Your finely-tuned T5 model (the translation wizard)
+│   └── vosk-model/     # The speech recognition engine that never sleeps
 ├── data/
-│ ├── train.txt # FSL translation pairs (384 examples)
-│ └── MY_DATA/ # Sign language video frames
+│   ├── train.txt       # 384 FSL translation pairs—your secret sauce
+│   └── MY_DATA/        # A treasure trove of sign language video frames
 └── src/
-├── t5_translator.py # Translation model training
-├── t5_translator_runner.py # Model inference
-├── frame_player.py # Visual display
-├── live_translate.py # Main application
-└── gpt4_translator.py # Alternative GPT-4 translator
+    ├── t5_translator.py        # Where the translation magic happens (training)
+    ├── t5_translator_runner.py # Time to show off your model (inference)
+    ├── frame_player.py         # The stage for your visual sign language performance
+    ├── live_translate.py       # The main event: live translation in action
+    └── gpt4_translator.py      # An alternative translator for when you feel fancy
+```
 
 ## Setup
 
-1. Create and activate virtual environment:
-bash
-python3 -m venv venv
-source venv/bin/activate
-2. Install required packages:
-bash
-python3 -m pip install -r requirements.txt
-3. Download required models:
-- Place Vosk model in `models/vosk-model/`
-- Place or train T5 model in `models/t5-finetuned/`
+Ready to dive in? Here’s your backstage pass:
+
+1. **Create & Activate Your Virtual Environment:**  
+   ```bash
+   python3 -m venv venv
+   source venv/bin/activate
+   ```
+2. **Install All the Goodies:**  
+   ```bash
+   python3 -m pip install -r requirements.txt
+   ```
+3. **Download Your Models:**  
+   - Drop your Vosk model in `models/vosk-model/`
+   - Either place your pre-trained T5 model or train one and put it in `models/t5-finetuned/`
 
 ## Usage
 
 ### Running the Live Translation System
-bash
+
+Unleash the magic with:
+```bash
 python3 live_translate.py
-This will:
-- Start listening to your microphone
-- Transcribe speech to text continuously
-- Queue translations for processing
-- Display corresponding sign language frames
-- Continue listening while playing animations
+```
+This command will:
+- Start listening to your microphone like a pro.
+- Transcribe your speech into text continuously.
+- Queue up translations faster than you can say “Sign Language!”
+- Display corresponding sign language frames in real time.
+- Keep the show rolling while animations play on.
 
 ### Training the Translation Model
-bash
+
+Want to make your model even smarter? Train it with:
+```bash
 python3 t5_translator.py
+```
+*(Our model is fed 384 delightful FSL translation pairs from `train.txt`—yum!)*
 
-The model is trained on 384 FSL translation pairs from train.txt.
+### Running Translations with Your Trained Model
 
-### Running Translations with Trained Model
-bash
+Time to see your creation in action:
+```bash
 python3 t5_translator_runner.py
+```
 
 ## FSL Translation Rules
 
-The system follows these FSL grammar conventions:
-1. Omits articles and auxiliary verbs (a, an, the, is, are)
-2. Places time/location markers at the beginning
-3. Uses indexing pronouns (ME, YOU, HE, SHE, THEY)
-4. Marks tense with PAST or FUTURE
-5. Places question words at the end
-6. Uses ALL-CAPS notation
+Our system follows these cool FSL grammar conventions:
+1. **Skip the Fluff:** Omit articles and auxiliary verbs (a, an, the, is, are).
+2. **Time/Location First:** Kick off with time or location markers.
+3. **Index Like a Pro:** Use indexing pronouns (ME, YOU, HE, SHE, THEY).
+4. **Mark the Tense:** Use PAST or FUTURE to keep it clear.
+5. **Questions on Point:** Place question words at the end.
+6. **All Caps for Impact:** Everything is loud and clear in ALL-CAPS.
 
-Example:
-- English: "What is your name?"
-- FSL: "NAME YOU WHAT"
+*Example:*  
+- **English:** "What is your name?"  
+- **FSL:** "NAME YOU WHAT"
 
 ## Training Data Format
 
-The `train.txt` file contains translation pairs:
-text
+Your `train.txt` file is the secret recipe. It contains pairs in the format:
+```
 FSL GLOSS => English sentence
-Examples:
-text
+```
+*Examples:*  
+```
 YOU NAME WHAT => what is your name?
 ME LIVE MANILA => i live in manila
 TIME FUTURE ME GO SCHOOL => i am going to school
-
+```
 
 ## Requirements
 
-- Python 3.8+
-- PyTorch
-- Transformers library
-- OpenCV
-- Vosk
-- PyAudio
-- Microphone access
+- **Python 3.8+**
+- **PyTorch**
+- **Transformers Library**
+- **OpenCV**
+- **Vosk**
+- **PyAudio**
+- **Microphone Access** (your gateway to live translation magic)
 
 ## Recent Improvements
 
-- [x] Added queued translation system for continuous speech recognition
-- [x] Implemented threading for simultaneous translation and display
-- [x] Added 384 FSL translation pairs for training
-- [x] Created separate runner for model inference
-- [x] Improved error handling in model loading
-- [x] Added alternative GPT-4 translator option
+- [x] Queued translation system for smooth, continuous speech recognition
+- [x] Threading implemented for simultaneous translation and display
+- [x] 384 FSL translation pairs added to training data
+- [x] Dedicated runner for model inference
+- [x] Enhanced error handling for model loading
+- [x] Alternative GPT-4 translator option added (just for fun)
 
 ## Future Improvements
 
-- [ ] Add more FSL signs to the dataset
-- [ ] Improve translation accuracy
-- [ ] Add support for more complex sentences
-- [ ] Reduce latency in real-time translation
-- [ ] Add user interface for better control
+- [ ] Expand the FSL sign dataset—more signs, more fun!
+- [ ] Boost translation accuracy to near-perfection
+- [ ] Tackle more complex sentences
+- [ ] Slash latency in real-time translation
+- [ ] Craft a sleek user interface for ultimate control
 
 ## Known Issues
 
-- Speech recognition may need adjustment in noisy environments
-- Some signs may not be available in the current dataset
-- Translation may have slight delays with long sentences
+- Speech recognition might need a tweak in noisy environments.
+- Some signs might be missing in the current dataset.
+- Translation may lag slightly on longer sentences—patience is a virtue!
 
 ## Contributing
 
-1. Fork the repository
-2. Create your feature branch
-3. Commit your changes
-4. Push to the branch
-5. Create a Pull Request
+Feel like adding your own magic? Here’s how to join:
+1. Fork the repository.
+2. Create your feature branch.
+3. Commit your awesome changes.
+4. Push to the branch.
+5. Open a Pull Request and let the fun begin!
 
 ## License
 
+*(Insert license information here if applicable.)*
 
 ## Author
 
-Chris Loui A. Canete
+**Chris Loui A. Canete**
 
 ## Acknowledgments
 
-- [Vosk](https://alphacephei.com/vosk/) for speech recognition
-- [Hugging Face](https://huggingface.co/) for T5 model
-- [MediaPipe](https://mediapipe.dev/) for pose detection
+A big shout-out to:
+- [Vosk](https://alphacephei.com/vosk/) for their stellar speech recognition.
+- [Hugging Face](https://huggingface.co/) for powering our T5 model.
+- [MediaPipe](https://mediapipe.dev/) for their innovative pose detection.
+
+---
+
