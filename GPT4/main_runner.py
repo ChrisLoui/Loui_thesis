@@ -5,7 +5,7 @@ from frame_player import play_collected_frames_for_action
 import openai
 from vosk import Model, KaldiRecognizer
 from dotenv import load_dotenv
-from gpt4_translator import generate_sentence_from_words_gpt4
+from GPT4.gpt4_translator import generate_sentence_from_words_gpt4
 
 def main():
     # Load environment variables and API key

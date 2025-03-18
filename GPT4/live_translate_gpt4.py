@@ -1,7 +1,7 @@
 import os
 import json
 import pyaudio
-from gpt4_translator import generate_sentence_from_words_gpt4
+from GPT4.gpt4_translator import generate_sentence_from_words_gpt4
 import openai
 from dotenv import load_dotenv
 from vosk import Model, KaldiRecognizer

@@ -23,7 +23,7 @@ def play_collected_frames_for_action(action, DATA_PATH='Step_2/MY_DATA', fps=10,
             if frame is None:
                 continue
 
-            cv2.imshow(f'Action: {action}, Sequence: {seq}', frame)
+            cv2.imshow(f'Action: {action}', frame)
             if cv2.waitKey(int(1000/fps)) & 0xFF == ord('q'):
                 break
 
@@ -31,4 +31,4 @@ def play_collected_frames_for_action(action, DATA_PATH='Step_2/MY_DATA', fps=10,
 
 if __name__ == "__main__":
     # Example usage
-    play_collected_frames_for_action("doctor".upper(), fps=30, sequence=None)
+    play_collected_frames_for_action("hello".upper(), fps=30, sequence=None)

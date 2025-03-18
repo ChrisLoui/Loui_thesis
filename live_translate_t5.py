@@ -3,6 +3,7 @@ import json
 import pyaudio
 from transformers import T5ForConditionalGeneration, T5Tokenizer
 from vosk import Model, KaldiRecognizer
+import torch  
 
 
 # ---------------------------
@@ -31,21 +32,22 @@ tokenizer = T5Tokenizer.from_pretrained(t5_model_path)
 model_t5 = T5ForConditionalGeneration.from_pretrained(t5_model_path)
 
 def post_process_fsl(translation):
-    # Remove unwanted prefix if present
+    # Remove unwanted prefix if present and do any additional text fixes
     if translation.startswith("FSL:"):
         translation = translation.replace("FSL:", "", 1).strip()
-    # Replace "YOUR" with "YOU" if found
     translation = translation.replace("YOUR", "YOU")
     return translation
 
 def translate_english_to_fsl(english_sentence, max_length=50):
     """
-    Translates a given English sentence into Filipino Sign Language (FSL) gloss using the fine-tuned T5 model.
+    Translates a given English sentence into Filipino Sign Language (FSL) gloss
+    using the fine-tuned T5 model with greedy decoding.
     """
-    # Use the prefix that was used during training for English-to-FSL translation.
     input_text = "translate english to fsl: " + english_sentence
     input_ids = tokenizer.encode(input_text, return_tensors="pt", max_length=128, truncation=True)
-    output_ids = model_t5.generate(input_ids, max_length=max_length, num_beams=5, early_stopping=True)
+    with torch.no_grad():
+        # Using greedy decoding (num_beams=1) to speed up translation
+        output_ids = model_t5.generate(input_ids, max_length=max_length, num_beams=1)
     translation = tokenizer.decode(output_ids[0], skip_special_tokens=True)
     return post_process_fsl(translation)
 
