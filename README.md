@@ -5,7 +5,7 @@ Welcome to the world of instant translation magic! Ever wished your spoken words
 ## Features
 
 - **Live-Action Speech Recognition:** Powered by Vosk, our system listens to your every word.
-- **T5-Powered Translation:** Our fine-tuned T5 model transforms your spoken English into crisp, clear FSL gloss.
+- **T5-Powered Translation:** This fine-tuned T5 model transforms your spoken English into crisp, clear FSL gloss.
 - **Visual Sign Language Display:** Watch pre-recorded sign frames light up as your message is translated.
 - **Continuous Input & Smooth Playback:** Chat away—our queued translation system keeps up with your pace.
 - **FSL Grammar Savvy:** Adheres to FSL rules for that authentic feel.
@@ -16,16 +16,16 @@ Welcome to the world of instant translation magic! Ever wished your spoken words
 
 Ready to dive in? Here’s your backstage pass:
 
-1. **Create & Activate Your Virtual Environment:**  
+1. **Create & Activate Your Virtual Environment:**
    ```bash
    python3 -m venv venv
    source venv/bin/activate
    ```
-2. **Install All the Goodies:**  
+2. **Install All the Goodies:**
    ```bash
    python3 -m pip install -r requirements.txt
    ```
-3. **Download Your Models:**  
+3. **Download Your Models:**
    - Drop your Vosk model in `models/vosk-model/`
    - Either place your pre-trained T5 model or train one and put it in `models/t5-finetuned/`
 
@@ -35,7 +35,7 @@ Ready to dive in? Here’s your backstage pass:
 
 Unleash the magic with:
 ```bash
-python3 live_translate.py
+python3 main_runner_t5.py
 ```
 This command will:
 - Start listening to your microphone like a pro.
@@ -50,7 +50,7 @@ Want to make your model even smarter? Train it with:
 ```bash
 python3 t5_translator.py
 ```
-*(Our model is fed 384 delightful FSL translation pairs from `train.txt`—yum!)*
+*(Our model is fed 800 delightful FSL translation pairs from `train.txt`—yum!)*
 
 ### Running Translations with Your Trained Model
 
@@ -67,10 +67,10 @@ Our system follows these cool FSL grammar conventions:
 3. **Index Like a Pro:** Use indexing pronouns (ME, YOU, HE, SHE, THEY).
 4. **Mark the Tense:** Use PAST or FUTURE to keep it clear.
 5. **Questions on Point:** Place question words at the end.
-6. **All Caps for Impact:** Everything is loud and clear in ALL-CAPS.
+6. **All Caps** Everything is in ALL-CAPS.
 
-*Example:*  
-- **English:** "What is your name?"  
+*Example:*
+- **English:** "What is your name?"
 - **FSL:** "NAME YOU WHAT"
 
 ## Training Data Format
@@ -79,11 +79,11 @@ Your `train.txt` file is the secret recipe. It contains pairs in the format:
 ```
 FSL GLOSS => English sentence
 ```
-*Examples:*  
+*Examples:*
 ```
 YOU NAME WHAT => what is your name?
-ME LIVE MANILA => i live in manila
-TIME FUTURE ME GO SCHOOL => i am going to school
+YOU SIGN NAME => what is your sign name?
+ME NOT UNDERSTAND => i don’t understand
 ```
 
 ## Requirements
@@ -141,4 +141,3 @@ A big shout-out to:
 - [MediaPipe](https://mediapipe.dev/) for their innovative pose detection.
 
 ---
-

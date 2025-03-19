@@ -3,7 +3,7 @@ import json
 import pyaudio
 from transformers import T5ForConditionalGeneration, T5Tokenizer
 from vosk import Model, KaldiRecognizer
-import torch  
+import torch
 
 
 # ---------------------------

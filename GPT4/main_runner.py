@@ -1,7 +1,7 @@
 import os
 import json
 import pyaudio
-from frame_player import play_collected_frames_for_action
+from Step_2.frame_player import play_collected_frames_for_action
 import openai
 from vosk import Model, KaldiRecognizer
 from dotenv import load_dotenv
