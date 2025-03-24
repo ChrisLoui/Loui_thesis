@@ -793,3 +793,4 @@ ME NEED REST => i need rest
 YOU NOT HEALTHY => you are not healthy
 YOU LOOK HEALTHY => you look healthy
 ME DOCTOR => i am a doctor
+YOU HAVE HEADACHE => do you have a headache?
