@@ -1,4 +1,4 @@
-from Step_1.utils import *
+from utils import *
 
 
 def run_realtime_detection():
