@@ -36,7 +36,6 @@ def post_process_fsl(translation):
     # Remove unwanted prefix if present and do any additional text fixes
     if translation.startswith("FSL:"):
         translation = translation.replace("FSL:", "", 1).strip()
-    translation = translation.replace("YOUR", "YOU")
     return translation
 
 def translate_english_to_fsl(english_sentence, max_length=50):
