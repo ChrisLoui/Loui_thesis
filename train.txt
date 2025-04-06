@@ -835,3 +835,4 @@ YOUR SYMPTOMS START WHEN => when did your symptoms start?
 YOUR SYMPTOMS WHAT => what are your symptoms?
 YOU HAVE ALLERGIES WHAT => what allergies do you have?
 YOU SMOKE => do you smoke?
+ME YESTERDAY DRANK WATER => i drank water yesterday
