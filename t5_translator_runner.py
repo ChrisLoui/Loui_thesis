@@ -13,9 +13,6 @@ def post_process_fsl(translation):
     if translation.startswith("FSL:"):
         translation = translation.replace("FSL:", "", 1).strip()
     # Replace "YOUR" with "YOU" if found.
-    if "YOUR" in translation:
-        translation = translation.replace("YOUR", "YOU")
-    return translation
 
 def translate_english_to_fsl(english_sentence, max_length=50):
     """

@@ -4,13 +4,16 @@ import torch
 from torch.utils.data import Dataset
 import string
 
-# Add GPU check at the start
-if not torch.cuda.is_available():
-    raise RuntimeError("This script requires a GPU with CUDA support. Please check your PyTorch installation.")
+# Change the GPU check to make it optional
+if torch.cuda.is_available():
+    print(f"Using GPU: {torch.cuda.get_device_name(0)}")
+    device = torch.device('cuda')
+else:
+    print("CUDA is not available. Using CPU instead.")
+    device = torch.device('cpu')
 
-print(f"Using GPU: {torch.cuda.get_device_name(0)}")
 print(f"PyTorch version: {torch.__version__}")
-print(f"CUDA version: {torch.version.cuda}")
+print(f"CUDA version: {torch.version.cuda if torch.cuda.is_available() else 'Not available'}")
 
 def normalize_fsl_gloss(text: str) -> str:
     """
@@ -93,36 +96,43 @@ class TranslationDataset(Dataset):
         }
 
 def main():
-    device = torch.device('cuda')  # We already ensured CUDA is available.
+    # We already set device at the top of the script
     print(f"Using device: {device}")
-    print(f"GPU Memory allocated: {torch.cuda.memory_allocated(0) / 1024**2:.2f} MB")
+    
+    if torch.cuda.is_available():
+        print(f"GPU Memory allocated: {torch.cuda.memory_allocated(0) / 1024**2:.2f} MB")
 
     model_name = "t5-base"
     print(f"Loading model {model_name}...")
     tokenizer = T5Tokenizer.from_pretrained(model_name)
     model = T5ForConditionalGeneration.from_pretrained(model_name)
     
-    # Move model to GPU
+    # Move model to the available device
     model = model.to(device)
     print(f"Model loaded and moved to {device}")
-    print(f"GPU Memory allocated after model load: {torch.cuda.memory_allocated(0) / 1024**2:.2f} MB")
+    
+    if torch.cuda.is_available():
+        print(f"GPU Memory allocated after model load: {torch.cuda.memory_allocated(0) / 1024**2:.2f} MB")
 
     print("Loading dataset...")
     dataset = TranslationDataset("train.txt", tokenizer)
     print(f"Dataset loaded with {len(dataset)} examples")
 
+    # Configure fp16 only when using GPU
+    fp16_setting = torch.cuda.is_available()
+
     training_args = TrainingArguments(
         output_dir="./t5-finetuned",
         num_train_epochs=20,
-        per_device_train_batch_size=2,  # Adjust based on your GPU memory
+        per_device_train_batch_size=2 if torch.cuda.is_available() else 1,  # Smaller batch size for CPU
         learning_rate=5e-5,
         weight_decay=0.01,
         logging_steps=5,
         save_steps=10,
         save_total_limit=2,
-        evaluation_strategy="no",
-        fp16=True,  # Enable mixed precision training
-        gradient_accumulation_steps=4,  # Helps with memory usage
+        eval_strategy="no",
+        fp16=fp16_setting,  # Enable mixed precision training only on GPU
+        gradient_accumulation_steps=4 if torch.cuda.is_available() else 8,  # Increase accumulation for CPU
     )
 
     trainer = Trainer(
@@ -138,7 +148,9 @@ def main():
     trainer.save_model("./t5-finetuned")
     tokenizer.save_pretrained("./t5-finetuned")
     print("Fine-tuning complete. Model saved to './t5-finetuned'.")
-    print(f"Final GPU Memory allocated: {torch.cuda.memory_allocated(0) / 1024**2:.2f} MB")
+    
+    if torch.cuda.is_available():
+        print(f"Final GPU Memory allocated: {torch.cuda.memory_allocated(0) / 1024**2:.2f} MB")
 
 if __name__ == "__main__":
     main()
