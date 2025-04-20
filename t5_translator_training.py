@@ -29,7 +29,7 @@ def normalize_fsl_gloss(text: str) -> str:
     # Remove punctuation
     text = text.translate(str.maketrans('', '', string.punctuation))
     # Remove stop words (simple list for articles, prepositions, auxiliary verbs)
-    stop_words = {"A", "AN", "THE", "IS", "ARE", "DO", "DOES", "DID", "HAS", "HAVE", "AM"}
+    stop_words = {"A", "AN", "THE", "IS", "ARE", "DO", "DOES", "DID", "HAS", "AM"}
     words = text.split()
     filtered_words = [word for word in words if word not in stop_words]
     return " ".join(filtered_words)
