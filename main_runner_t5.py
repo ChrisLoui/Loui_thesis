@@ -7,6 +7,7 @@ import time
 import cv2
 from vosk import Model, KaldiRecognizer
 from transformers import T5Tokenizer, T5ForConditionalGeneration
+from concurrent.futures import ThreadPoolExecutor
 
 # ---------------------------
 # Load the Vosk Speech Recognition Model
@@ -32,11 +33,26 @@ animation_queue = queue.Queue()
 frame_queue = queue.Queue()  # Queue for frames to be displayed by the main thread
 stop_system = threading.Event()  # Flag to stop all threads
 
+# Add this at the start of your script as a global cache
+frame_cache = {}
+
+
+def preload_frames():
+    """Preload all frames into memory for faster retrieval"""
+    DATA_PATH = 'Step_2/MY_DATA'
+    for action in os.listdir(DATA_PATH):
+        action_path = os.path.join(DATA_PATH, action)
+        if os.path.isdir(action_path):
+            frame_cache[action] = collect_frames_for_action(action)
+    print("Frames preloaded into cache")
+
+
 def post_process_fsl(translation):
     # Remove unwanted prefix if present and do any additional text fixes
     if translation.startswith("FSL:"):
         translation = translation.replace("FSL:", "", 1).strip()
     return translation
+
 
 def translate_english_to_fsl(english_sentence, max_length=50):
     """
@@ -44,16 +60,22 @@ def translate_english_to_fsl(english_sentence, max_length=50):
     """
     # Use the training prefix for English-to-FSL translation.
     input_text = "translate english to fsl: " + english_sentence
-    input_ids = tokenizer.encode(input_text, return_tensors="pt", max_length=128, truncation=True)
-    output_ids = model_t5.generate(input_ids, max_length=max_length, num_beams=5, early_stopping=True)
+    input_ids = tokenizer.encode(
+        input_text, return_tensors="pt", max_length=128, truncation=True)
+    output_ids = model_t5.generate(
+        input_ids, max_length=max_length, num_beams=5, early_stopping=True)
     translation = tokenizer.decode(output_ids[0], skip_special_tokens=True)
     return post_process_fsl(translation)
 
+
 def collect_frames_for_action(action, DATA_PATH='Step_2/MY_DATA', sequence=None):
     """
-    Collects frames for an action and returns them as a list of (frame, action_name) tuples.
-    This function doesn't display frames, just collects them.
+    Optimized frame collection with caching
     """
+    # Return cached frames if available
+    if action in frame_cache:
+        return frame_cache[action]
+
     frames_list = []
     action_folder = os.path.join(DATA_PATH, action)
 
@@ -65,18 +87,23 @@ def collect_frames_for_action(action, DATA_PATH='Step_2/MY_DATA', sequence=None)
     if sequence is not None:
         sequences = [str(sequence)]
 
-    for seq in sequences:
-        seq_folder = os.path.join(action_folder, seq)
-        frames = [f for f in os.listdir(seq_folder) if f.endswith('.jpg')]
-        frames.sort(key=lambda x: int(x.split('.')[0]))
+    # Use list comprehension for faster processing
+    frames_list = [(cv2.imread(os.path.join(action_folder, seq, frame)), action)
+                   for seq in sequences
+                   for frame in sorted(os.listdir(os.path.join(action_folder, seq)))
+                   if frame.endswith('.jpg')]
 
-        for frame_file in frames:
-            frame_path = os.path.join(seq_folder, frame_file)
-            frame = cv2.imread(frame_path)
-            if frame is not None:
-                frames_list.append((frame, action))
-
+    # Store in cache
+    frame_cache[action] = frames_list
     return frames_list
+
+
+def resize_frame(frame, scale_percent=50):
+    """Resize frame to improve performance"""
+    width = int(frame.shape[1] * scale_percent / 100)
+    height = int(frame.shape[0] * scale_percent / 100)
+    return cv2.resize(frame, (width, height), interpolation=cv2.INTER_AREA)
+
 
 def player_thread():
     """
@@ -120,6 +147,7 @@ def player_thread():
             # No items in the queue, just continue checking
             pass
 
+
 def speech_recognition_thread():
     """
     Thread that handles continuous speech recognition.
@@ -152,49 +180,61 @@ def speech_recognition_thread():
         stream.close()
         p.terminate()
 
+
 def display_frames_thread(fps=30):
-    """
-    Thread responsible for displaying frames from the frame queue.
-    This runs in the main thread to avoid OpenCV GUI issues.
-    """
+    """Optimized frame display thread"""
     current_window = None
+    frame_time = 1/fps
+    last_time = time.time()
 
     while not stop_system.is_set():
         try:
-            # Get the next frame from the queue (wait up to 0.1 seconds)
             frame_data = frame_queue.get(timeout=0.1)
 
-            # None is a marker for end of word's frames
             if frame_data is None:
-                # Close the current window when we're done with this word
                 if current_window is not None:
                     cv2.destroyWindow(current_window)
                     current_window = None
                 continue
 
             frame, action = frame_data
+
+            # Resize frame if needed
+            frame = resize_frame(frame)
+
             window_name = f'Action: {action}'
             current_window = window_name
 
-            # Display the frame
-            cv2.imshow(window_name, frame)
+            # Frame timing control
+            current_time = time.time()
+            elapsed = current_time - last_time
+            if elapsed < frame_time:
+                time.sleep(frame_time - elapsed)
 
-            # Wait according to FPS, and check for 'q' key to exit
-            if cv2.waitKey(int(1000/fps)) & 0xFF == ord('q'):
+            cv2.imshow(window_name, frame)
+            last_time = time.time()
+
+            if cv2.waitKey(1) & 0xFF == ord('q'):
                 stop_system.set()
                 break
 
         except queue.Empty:
-            # No frames to display, just continue checking
             pass
-        except Exception as e:
-            print(f"Error displaying frame: {e}")
 
-    # Clean up any remaining windows
-    cv2.destroyAllWindows()
+
+def process_frames_parallel(words):
+    """Process multiple words' frames in parallel"""
+    with ThreadPoolExecutor(max_workers=4) as executor:
+        futures = [executor.submit(collect_frames_for_action, word)
+                   for word in words]
+        return [future.result() for future in futures]
+
 
 def main():
     print("Starting concurrent FSL translation system...")
+    print("Preloading frames...")
+    preload_frames()  # Preload frames at startup
+
     print("Listening, translating, and playing frames... (press Ctrl+C to stop)")
 
     # Start the player thread (collects frames)
@@ -224,6 +264,7 @@ def main():
         cv2.destroyAllWindows()
 
         print("System stopped.")
+
 
 if __name__ == "__main__":
     main()
